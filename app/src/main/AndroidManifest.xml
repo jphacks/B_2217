@@ -24,7 +24,13 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+
         </activity>
     </application>
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
 
 </manifest>
