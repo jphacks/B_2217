@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SpeekDuck</string>
     <string name="textView">Hello World!</string>
+    <string name="output">outputHere</string>
 </resources>
