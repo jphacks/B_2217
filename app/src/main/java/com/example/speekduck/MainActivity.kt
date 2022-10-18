@@ -41,16 +41,14 @@ class MainActivity : AppCompatActivity() {
                 speechRecognizer?.stopListening()
             }
         }
-        /*
-        saveFile("temp.txt","")
+
         val button2 = findViewById<Button>(R.id.button2)
         val textView2 = findViewById<TextView>(R.id.textView2)
         button2.setOnClickListener(View.OnClickListener {
-            val buf: BufferedReader = readFile("temp.txt")
+            val buf: BufferedReader = readFile("tmp.txt")
             val result = buf.use{it.readText()}
             textView2.text = result
         })
-         */
 
     }
 
