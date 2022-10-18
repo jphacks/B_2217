@@ -42,20 +42,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val button2 = findViewById<Button>(R.id.button2)
         val textView2 = findViewById<TextView>(R.id.textView2)
-        button2.setOnClickListener(View.OnClickListener {
+        val file = File("tmp.txt")
+        if(file.exists()){
             val buf: BufferedReader = readFile("tmp.txt")
             val result = buf.use{it.readText()}
             textView2.text = result
-        })
+        }else{
+            textView2.text = "empty..."
+        }
+
 
     }
 
     private fun createRecognitionListenerStringStream(onResult: (String)->Unit): RecognitionListener {
         return object : RecognitionListener {
             override fun onRmsChanged(rmsdB: Float) { /** 今回は特に利用しない */ }
-            override fun onReadyForSpeech(params: Bundle) {  }
+            override fun onReadyForSpeech(params: Bundle) { onResult("アヒルに話しかけて見てください...") }
             override fun onBufferReceived(buffer: ByteArray) { }
             override fun onPartialResults(partialResults: Bundle) { val stringArray = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 onResult(stringArray.toString())}
@@ -67,8 +70,26 @@ class MainActivity : AppCompatActivity() {
                 val stringArray = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 val tmpfile = "tmp.txt"
                 val memotmp = stringArray.toString()
-                saveFile(tmpfile,memotmp)
-                onResult(memotmp)
+                val memo = memotmp.removePrefix("[").removeSuffix("]")
+                val filePint = File(tmpfile)
+                if (filePint.exists()){
+                    val buf: BufferedReader = readFile("tmp.txt")
+                    var resulttmp = buf.use{it.readText()}
+                    resulttmp += memotmp
+                    saveFile(tmpfile,resulttmp)
+                }else{
+                    saveFile(tmpfile,memo)
+                }
+                val textView2 = findViewById<TextView>(R.id.textView2)
+                val file = File("tmp.txt")
+                if(file.exists()){
+                    val buf: BufferedReader = readFile("tmp.txt")
+                    val result = buf.use{it.readText()}
+                    textView2.text = result
+                }else{
+                    textView2.text = "empty..."
+                }
+                onResult(memo)
             }
         }
     }
@@ -82,6 +103,8 @@ class MainActivity : AppCompatActivity() {
         val readFile = File(applicationContext.filesDir, file)
         return readFile.bufferedReader()
     }
+
+
 
 
     override fun onDestroy() {
