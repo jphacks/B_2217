@@ -1,6 +1,7 @@
 package com.example.speekduck
 
 import android.Manifest.permission.RECORD_AUDIO
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -20,6 +21,7 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
     private var speechRecognizer : SpeechRecognizer? = null
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,26 +35,32 @@ class MainActivity : AppCompatActivity() {
         val textMessage = findViewById<TextView>(R.id.textView)
         speechRecognizer?.setRecognitionListener(createRecognitionListenerStringStream { textMessage.text = it })
         val button = findViewById<ToggleButton>(R.id.button)
+        val textView2 = findViewById<TextView>(R.id.textView2)
+        val file = getFileStreamPath("tmp.txt")
         RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS
         button.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
+                if(file.exists()){
+                    val result = file.readText()
+                    textView2.text = result
+                }else{
+                    textView2.text = "empty..."
+                }
                 speechRecognizer?.startListening(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH))
             }else{
                 speechRecognizer?.stopListening()
             }
         }
-
-        val textView2 = findViewById<TextView>(R.id.textView2)
-        val file = File("tmp.txt")
-        if(file.exists()){
-            val buf: BufferedReader = readFile("tmp.txt")
-            val result = buf.use{it.readText()}
-            textView2.text = result
-        }else{
-            textView2.text = "empty..."
+        val d_button = findViewById<Button>(R.id.button2)
+        d_button.setOnClickListener {
+            file.delete()
+            if(file.exists()){
+                val result = file.readText()
+                textView2.text = result
+            }else{
+                textView2.text = "empty..."
+            }
         }
-
-
     }
 
     private fun createRecognitionListenerStringStream(onResult: (String)->Unit): RecognitionListener {
@@ -71,23 +79,13 @@ class MainActivity : AppCompatActivity() {
                 val tmpfile = "tmp.txt"
                 val memotmp = stringArray.toString()
                 val memo = memotmp.removePrefix("[").removeSuffix("]")
-                val filePint = File(tmpfile)
+                val filePint = getFileStreamPath("tmp.txt")
                 if (filePint.exists()){
-                    val buf: BufferedReader = readFile("tmp.txt")
-                    var resulttmp = buf.use{it.readText()}
-                    resulttmp += memotmp
+                    var resulttmp = filePint.readText()
+                    resulttmp += memo
                     saveFile(tmpfile,resulttmp)
                 }else{
                     saveFile(tmpfile,memo)
-                }
-                val textView2 = findViewById<TextView>(R.id.textView2)
-                val file = File("tmp.txt")
-                if(file.exists()){
-                    val buf: BufferedReader = readFile("tmp.txt")
-                    val result = buf.use{it.readText()}
-                    textView2.text = result
-                }else{
-                    textView2.text = "empty..."
                 }
                 onResult(memo)
             }
