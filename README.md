@@ -1,6 +1,6 @@
-# SpeakDuck(仮)
+# SpeakDuck
 
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2022/08/JPHACKS2022_ogp.jpg)](https://www.youtube.com/watch?v=LUPQFB4QyVo)
+[![IMAGE ALT TEXT HERE](https://github.com/jphacks/B_2217/blob/master/rubberduckdemo_screenshot.png)]
 
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
