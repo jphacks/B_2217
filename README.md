@@ -1,6 +1,6 @@
 # SpeakDuck
 
-[![IMAGE ALT TEXT HERE](https://github.com/jphacks/B_2217/blob/master/rubberduckdemo_screenshot.png)]
+[![IMAGE ALT TEXT HERE](https://github.com/jphacks/B_2217/blob/master/rubberduckdemo_screenshot.png)](https://youtube.com/shorts/cdZ29GYj_JA)
 
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
